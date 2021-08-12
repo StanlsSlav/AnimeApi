@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimeAPI", "AnimeAPI.csproj", "{14D8E43A-1F30-4439-B019-279ED2BE055A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimeApi.UnitTests", "..\AnimeApi.UnitTests\AnimeApi.UnitTests.csproj", "{3184300E-C569-4EAF-A7CE-F64FC7A4D5FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14D8E43A-1F30-4439-B019-279ED2BE055A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14D8E43A-1F30-4439-B019-279ED2BE055A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14D8E43A-1F30-4439-B019-279ED2BE055A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14D8E43A-1F30-4439-B019-279ED2BE055A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3184300E-C569-4EAF-A7CE-F64FC7A4D5FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3184300E-C569-4EAF-A7CE-F64FC7A4D5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3184300E-C569-4EAF-A7CE-F64FC7A4D5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3184300E-C569-4EAF-A7CE-F64FC7A4D5FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
