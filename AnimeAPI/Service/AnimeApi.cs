@@ -27,7 +27,7 @@ namespace AnimeAPI.Service
         private static readonly AnimeValidator Validator = new();
 
         /// <summary>
-        ///     Executes the fluent validation for parameter <see cref="toValidate"/>
+        ///     Executes the fluent validation for parameter <paramref name="toValidate"/>
         /// </summary>
         /// <param name="toValidate"> The anime to fluent validate </param>
         /// <param name="allowNullValues"> Indicate if null values are allowed </param>
@@ -219,7 +219,7 @@ namespace AnimeAPI.Service
         }
 
         /// <summary>
-        ///     Checks if <see cref="animeName"/> is already present in the db
+        ///     Checks if <paramref name="animeName"/> is already present in the db
         /// </summary>
         /// <param name="animeName"> The name to look out for </param>
         /// <returns> True if the search returns any object; otherwise false </returns>
