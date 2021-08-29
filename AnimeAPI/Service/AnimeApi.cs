@@ -171,7 +171,9 @@ namespace AnimeAPI.Service
                     validProperty.Equals(nameof(Anime.Name), StringComparison.InvariantCultureIgnoreCase) &&
                     await IsDuplicateAsync(newValue);
 
-                if (isCurrentEpHigher || isTotalEpsLower || isNameDuplicate)
+                if (isCurrentEpHigher ||
+                    isTotalEpsLower ||
+                    isNameDuplicate)
                 {
                     return (false, null);
                 }
