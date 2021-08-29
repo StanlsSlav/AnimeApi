@@ -24,9 +24,7 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "Database": "MAL", 
-        "Collection": "AnimesTest"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
