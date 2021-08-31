@@ -23,5 +23,5 @@ jobs:
         with:
           dotnet-version: 5.0.x
 
-      - name: Build the app
-        run: dotnet build "AnimeAPI/AnimeAPI.csproj" -c Release
+      - name: Build and run the app
+        run: dotnet run -p "AnimeAPI/AnimeAPI.csproj" -c Release -- -d Ani -c API
