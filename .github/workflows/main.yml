@@ -4,6 +4,8 @@ name: AniAPI Build
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - "./README.md"
 
   pull-request:
     branches: [ main ]
@@ -22,6 +24,9 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
+
+      - name: Install dependencies
+        run: dotnet restore
 
       - name: Build and run the app
         run: dotnet run -p "AnimeAPI/AnimeAPI.csproj" -c Release -- -d Ani -c API
