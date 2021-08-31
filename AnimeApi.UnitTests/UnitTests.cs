@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AnimeAPI.Models;
-using AnimeAPI.Service;
+using AnimeApi.Models;
+using AnimeApi.Service;
 using MongoDB.Bson;
 using NUnit.Framework;
 

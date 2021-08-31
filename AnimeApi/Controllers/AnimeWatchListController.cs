@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using AnimeAPI.Models;
-using AnimeAPI.Service;
+using AnimeApi.Models;
+using AnimeApi.Service;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
-namespace AnimeAPI.Controllers
+namespace AnimeApi.Controllers
 {
     /// <summary>
     ///     Anime API controller

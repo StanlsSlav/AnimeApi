@@ -1,7 +1,7 @@
 #pragma warning disable 1591
 
-using AnimeAPI.Models;
-using AnimeAPI.Models.ModelValidators;
+using AnimeApi.Models;
+using AnimeApi.Models.ModelValidators;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace AnimeAPI
+namespace AnimeApi
 {
     public class Startup
     {
@@ -31,7 +31,7 @@ namespace AnimeAPI
                 c.SwaggerDoc("v1.0.0",
                     new OpenApiInfo
                     {
-                        Title = "AnimeAPI",
+                        Title = "AnimeApi",
                         Version = "v1.0.0"
                     });
             });
@@ -46,7 +46,7 @@ namespace AnimeAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1.0.0/swagger.json", "AnimeAPI v1.0.0"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1.0.0/swagger.json", "AnimeApi v1.0.0"));
             }
 
             app.UseHttpsRedirection();

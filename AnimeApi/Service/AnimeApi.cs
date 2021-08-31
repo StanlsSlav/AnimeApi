@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AnimeAPI.HelperMethods;
-using AnimeAPI.Models;
-using AnimeAPI.Models.ModelValidators;
+using AnimeApi.HelperMethods;
+using AnimeApi.Models;
+using AnimeApi.Models.ModelValidators;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace AnimeAPI.Service
+namespace AnimeApi.Service
 {
     /// <summary>
     ///     Holds the CRUD methods that operate on the <a href="https://www.mongodb.com/">MongoDB</a>
