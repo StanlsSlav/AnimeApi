@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace AnimeAPI.Models
+namespace AnimeApi.Models
 {
     /// <summary>
     ///     Model of anime object for db

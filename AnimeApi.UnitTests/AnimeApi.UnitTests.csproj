@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AnimeAPI\AnimeAPI.csproj" />
+      <ProjectReference Include="..\AnimeApi\AnimeApi.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@
 
 using FluentValidation;
 
-namespace AnimeAPI.Models.ModelValidators
+namespace AnimeApi.Models.ModelValidators
 {
     /// <summary>
     ///     Validator model for <see cref="Anime"/>

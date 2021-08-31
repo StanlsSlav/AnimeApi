@@ -5,7 +5,7 @@ using CommandLine;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace AnimeAPI
+namespace AnimeApi
 {
     internal class Options
     {

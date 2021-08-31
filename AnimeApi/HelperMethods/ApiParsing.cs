@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AnimeAPI.HelperMethods
+namespace AnimeApi.HelperMethods
 {
     /// <summary>
     ///     Holds the custom parsing methods for the anime api
