@@ -159,12 +159,13 @@ namespace AnimeApi.Service
             {
                 // Don't let current episode be > than total episodes
                 var isCurrentEpHigher =
-                    validProperty!.Equals(nameof(Anime.CurrentEpisode)) &&
+                    validProperty!.Contains("current") &&
                     (int)validValue! > animeToUpdate.TotalEpisodes;
 
                 // Don't let total episodes be < than current episode
                 var isTotalEpsLower =
-                    validProperty.Contains("total") && (int)validValue! < animeToUpdate.CurrentEpisode;
+                    validProperty.Contains("total") &&
+                    (int)validValue! < animeToUpdate.CurrentEpisode;
 
                 // Don't let anime name duplicates
                 var isNameDuplicate =
