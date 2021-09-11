@@ -39,12 +39,10 @@ namespace AnimeApi.Service
             Validator.AllowNullValues = allowNullValues;
             var validationResult = await Validator.ValidateAsync(toValidate);
 
-            List<string> failures = new();
-
-            foreach (var resultError in validationResult.Errors)
-            {
-                failures.Add(resultError.ErrorMessage);
-            }
+            List<string> failures = validationResult
+                .Errors
+                .Select(resultError => resultError.ErrorMessage)
+                .ToList();
 
             return (validationResult.IsValid, failures.ToJson());
         }
@@ -152,43 +150,43 @@ namespace AnimeApi.Service
             string propertyToUpdate,
             string newValue)
         {
-            var animeToUpdate = (await GetMatchesAsync(new Anime() { Id = animeId }))[0];
+            var animeToUpdate = (await GetMatchesAsync(new Anime { Id = animeId }))[0];
 
-            if (ApiParsing.TryParseName(propertyToUpdate, out var validProperty) &&
-                ApiParsing.TryParseTypeValue(validProperty!, newValue, out var validValue))
+            if (!ApiParsing.TryParseName(propertyToUpdate, out var validProperty) ||
+                !ApiParsing.TryParseTypeValue(validProperty!, newValue, out var validValue))
             {
-                // Don't let current episode be > than total episodes
-                var isCurrentEpHigher =
-                    validProperty!.Contains("current") &&
-                    (int)validValue! > animeToUpdate.TotalEpisodes;
-
-                // Don't let total episodes be < than current episode
-                var isTotalEpsLower =
-                    validProperty.Contains("total") &&
-                    (int)validValue! < animeToUpdate.CurrentEpisode;
-
-                // Don't let anime name duplicates
-                var isNameDuplicate =
-                    validProperty.Equals(nameof(Anime.Name), StringComparison.InvariantCultureIgnoreCase) &&
-                    await IsDuplicateAsync(newValue);
-
-                if (isCurrentEpHigher ||
-                    isTotalEpsLower ||
-                    isNameDuplicate)
-                {
-                    return (false, null);
-                }
-
-                await Db.FindOneAndUpdateAsync(x => x.Id == animeId,
-                    Builders<Anime>.Update.Set(validProperty, validValue));
-
-                List<Anime> data = await GetMatchesAsync(new Anime() { Id = animeId });
-                Anime anime = data[0];
-
-                return (true, anime);
+                return (false, null);
             }
 
-            return (false, null);
+            // Don't let current episode be > than total episodes
+            var isCurrentEpHigher =
+                validProperty!.Contains("current") &&
+                (int)validValue! > animeToUpdate.TotalEpisodes;
+
+            // Don't let total episodes be < than current episode
+            var isTotalEpsLower =
+                validProperty.Contains("total") &&
+                (int)validValue! < animeToUpdate.CurrentEpisode;
+
+            // Don't let anime name duplicates
+            var isNameDuplicate =
+                validProperty.Equals(nameof(Anime.Name), StringComparison.InvariantCultureIgnoreCase) &&
+                await IsDuplicateAsync(newValue);
+
+            if (isCurrentEpHigher ||
+                isTotalEpsLower ||
+                isNameDuplicate)
+            {
+                return (false, null);
+            }
+
+            await Db.FindOneAndUpdateAsync(x => x.Id == animeId,
+                Builders<Anime>.Update.Set(validProperty, validValue));
+
+            List<Anime> data = await GetMatchesAsync(new Anime { Id = animeId });
+            Anime anime = data[0];
+
+            return (true, anime);
         }
 
         /// <summary>
@@ -228,7 +226,7 @@ namespace AnimeApi.Service
         /// <returns> True if the search returns any object; otherwise false </returns>
         private static async Task<bool> IsDuplicateAsync(string animeName)
         {
-            List<Anime> matches = await GetMatchesAsync(new Anime() { Name = animeName }, true);
+            List<Anime> matches = await GetMatchesAsync(new Anime { Name = animeName }, true);
             return matches.Any();
         }
     }

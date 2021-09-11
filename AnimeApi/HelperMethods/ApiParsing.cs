@@ -1,4 +1,6 @@
-﻿#nullable enable
+﻿// ReSharper disable InvertIf
+
+#nullable enable
 
 using System;
 using System.Collections.Generic;
@@ -53,7 +55,8 @@ namespace AnimeApi.HelperMethods
                 validName = ModelToProperty[propertyName];
                 return true;
             }
-            else if (containsValue)
+
+            if (containsValue)
             {
                 validName = ModelToProperty.Values.First(x => x == propertyName.ToLower());
                 return true;

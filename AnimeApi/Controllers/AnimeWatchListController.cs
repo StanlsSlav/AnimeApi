@@ -26,7 +26,7 @@ namespace AnimeApi.Controllers
         [ProducesResponseType(200)]
         public IActionResult Ping()
         {
-            // await Task.Delay(TimeSpan.FromMinutes(30)); 😈
+            // await Task.Delay(TimeSpan.FromMinutes(30)); >:)
             return Ok("OK");
         }
 
