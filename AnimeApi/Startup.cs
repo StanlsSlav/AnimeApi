@@ -1,5 +1,8 @@
 #pragma warning disable 1591
 
+using System;
+using System.IO;
+using System.Reflection;
 using AnimeApi.Models;
 using AnimeApi.Models.ModelValidators;
 using FluentValidation;
@@ -32,8 +35,23 @@ namespace AnimeApi
                     new OpenApiInfo
                     {
                         Title = "AnimeApi",
-                        Version = "v1.0.0"
+                        Version = "v1.0.0",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "StanlsSlav",
+                            Email = "",
+                            Url = new Uri("https://github.com/StanlsSlav"),
+                        },
+                        License = new OpenApiLicense
+                        {
+                            Name = "Licensed under MIT",
+                            Url = new Uri("https://mit-license.org/")
+                        }
                     });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddTransient<IValidator<Anime>, AnimeValidator>();
