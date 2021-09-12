@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AnimeApi.Models;
 using AnimeApi.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
@@ -14,6 +15,7 @@ namespace AnimeApi.Controllers
     /// <summary>
     ///     Anime API controller
     /// </summary>
+    [Produces("application/json", "text/plain")]
     [ApiController]
     [Route("[controller]")]
     public class AnimeApi : ControllerBase
@@ -22,8 +24,9 @@ namespace AnimeApi.Controllers
         ///     For testing purposes
         /// </summary>
         /// <returns> An message </returns>
+        /// <response code="200"> An ok message </response>
         [HttpGet("/")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Ping()
         {
             // await Task.Delay(TimeSpan.FromMinutes(30)); >:)
@@ -35,9 +38,11 @@ namespace AnimeApi.Controllers
         /// </summary>
         /// <param name="anime"> The anime scheme to query on </param>
         /// <returns> Ok with all the anime or that matches the query </returns>
+        /// <response code="200"> Returns the matching animes or all </response>
+        /// <response code="204"> Returns when no matching anime was found </response>
         [HttpGet("/anime")]
-        [ProducesResponseType(typeof(List<Anime>), 200)]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(List<Anime>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetMatchingAnime([FromQuery] Anime anime)
         {
             List<Anime> data = await Api.GetMatchesAsync(anime);
@@ -59,10 +64,13 @@ namespace AnimeApi.Controllers
         /// <param name="hasFinishedAiring"> If the new anime has completed airing </param>
         /// <param name="doneWatching"> If the user marked the new anime as completed </param>
         /// <returns> Ok with the anime if successful; otherwise a bad request with the encountered errors</returns>
+        /// <response code="200"> Returns the newly created anime </response>
+        /// <response code="400"> Returns the possible errors caused by the request with the occured errors </response>
+        /// <response code="500"> Returns when an internal error occured </response>
         [HttpPost("/anime")]
-        [ProducesResponseType(typeof(Anime), 200)]
-        [ProducesResponseType(typeof(string), 400)]
-        [ProducesResponseType(typeof(string), 500)]
+        [ProducesResponseType(typeof(Anime), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PostAnime(
             [Required] [FromQuery(Name = "name")] string name,
             [Required] [FromQuery(Name = "current_episode")] int currentEpisode,
@@ -100,9 +108,11 @@ namespace AnimeApi.Controllers
         /// </summary>
         /// <param name="id"> The anime id to delete </param>
         /// <returns> Ok if successful </returns>
+        /// <response code="200"> Returns the anime that was found and deleted </response>
+        /// <response code="404"> Returns when id was not found </response>
         [HttpDelete("/anime")]
-        [ProducesResponseType(typeof(Anime), 200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(Anime), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAnime(
             [Required] [FromQuery(Name = "id")] string id)
         {
@@ -123,9 +133,11 @@ namespace AnimeApi.Controllers
         /// <param name="field"> The field to update </param>
         /// <param name="newValue"> The new value that will replace the older one </param>
         /// <returns> Ok with the newly updated anime </returns>
+        /// <response code="200"> Returns the newly updated anime </response>
+        /// <response code="400"> Returns when the request couldn't be processed </response>
         [HttpPatch("/anime")]
-        [ProducesResponseType(typeof(Anime), 200)]
-        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(Anime), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PartialUpdate(
             [Required] [FromQuery(Name = "id")] string id,
             [Required] [FromQuery(Name = "field")] string field,
@@ -144,13 +156,14 @@ namespace AnimeApi.Controllers
         /// <summary>
         ///     Same as <see cref="PartialUpdate" />, but allows various fields to get updated
         /// </summary>
-        /// <remarks> Awesome! </remarks>
         /// <param name="id"> The anime id to find </param>
         /// <param name="newAnime"> The anime object to update against </param>
         /// <returns> Ok with the newly updated anime </returns>
+        /// <response code="200"> Returns the newly updated anime </response>
+        /// <response code="400"> Returns when the request couldn't be processed with the occured errors </response>
         [HttpPut("/anime")]
-        [ProducesResponseType(typeof(Anime), 200)]
-        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(Anime), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> FullUpdate(
             [Required] [FromQuery(Name = "id")] string id,
             [FromQuery] Anime newAnime)
