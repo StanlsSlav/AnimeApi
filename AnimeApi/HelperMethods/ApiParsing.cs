@@ -19,8 +19,8 @@ namespace AnimeApi.HelperMethods
             {
                 ["Id"] = "_id",
                 ["Name"] = "name",
-                ["DoneWatching"] = "finished",
-                ["IsAiringFinished"] = "finished_airing",
+                ["IsFinished"] = "is_finished",
+                ["IsAiringFinished"] = "is_airing_finished",
                 ["CurrentEpisode"] = "current_episode",
                 ["TotalEpisodes"] = "total_episodes"
             };
@@ -31,8 +31,8 @@ namespace AnimeApi.HelperMethods
             {
                 ["id"] = typeof(string),
                 ["name"] = typeof(string),
-                ["finished"] = typeof(bool),
-                ["finished_airing"] = typeof(bool),
+                ["is_finished"] = typeof(bool),
+                ["is_airing_finished"] = typeof(bool),
                 ["current_episode"] = typeof(int),
                 ["total_episodes"] = typeof(int)
             };

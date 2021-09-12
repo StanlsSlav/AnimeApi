@@ -67,8 +67,8 @@ namespace AnimeApi.Controllers
             [Required] [FromQuery(Name = "name")] string name,
             [Required] [FromQuery(Name = "current_episode")] int currentEpisode,
             [Required] [FromQuery(Name = "total_episodes")] int totalEpisodes,
-            [Required] [FromQuery(Name = "finished_airing")] bool hasFinishedAiring,
-            [FromQuery(Name = "finished")] bool? doneWatching)
+            [Required] [FromQuery(Name = "is_airing_finished")] bool hasFinishedAiring,
+            [FromQuery(Name = "is_finished")] bool? doneWatching)
         {
             Anime animeToCreate = new()
             {
@@ -77,7 +77,7 @@ namespace AnimeApi.Controllers
                 CurrentEpisode = currentEpisode,
                 TotalEpisodes = totalEpisodes,
                 IsAiringFinished = hasFinishedAiring,
-                DoneWatching = doneWatching ?? currentEpisode == totalEpisodes
+                IsFinished = doneWatching ?? currentEpisode == totalEpisodes
             };
 
             var (isValid, errors) = await Api.ValidateAnimeAsync(animeToCreate, false);

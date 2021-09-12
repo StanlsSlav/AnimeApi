@@ -45,7 +45,7 @@ namespace AnimeApi.Models.ModelValidators
                     .WithMessage("Name must be at least 2 characters long");
 
 
-            RuleFor(anime => anime.DoneWatching)
+            RuleFor(anime => anime.IsFinished)
                 .LessThanOrEqualTo(anime => anime.IsAiringFinished)
                     .WithMessage("Anime cannot be finished if it's still airing");
             
