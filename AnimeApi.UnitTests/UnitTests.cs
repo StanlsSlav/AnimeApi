@@ -19,7 +19,7 @@ namespace AnimeApi.UnitTests
             CurrentEpisode = 0,
             TotalEpisodes = 2,
             IsAiringFinished = true,
-            DoneWatching = true
+            IsFinished = true
         };
 
         private static string Database = "MAL";
@@ -33,32 +33,29 @@ namespace AnimeApi.UnitTests
             Environment.SetEnvironmentVariable("Collection", Collection);
         }
 
+        [TearDown]
+        public static async Task TearDown()
+        {
+            try
+            {
+                _ = await Api.DeleteWithIdAsync(TestAnime.Id!);
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         [SetUp]
         public static async Task SetUp()
         {
-            // Would result in errors about the test anime's Id otherwise
             try
             {
                 Assert.IsTrue(await Api.CreateAsync(TestAnime));
             }
             catch (Exception)
             {
-                Assert.Fail($"Check id: {TestAnime.Id}");
-            }
-        }
-
-        [TearDown]
-        public static async Task Teardown()
-        {
-            // Always delete the test anime after using it
-            // So SetUp() wouldn't result in a fail
-            try
-            {
-                _ = await Api.DeleteWithIdAsync(TestAnime.Id!);
-            }
-            catch (Exception)
-            {
-                Assert.Fail($"Couldn't delete id: {TestAnime.Id}");
+                Assert.Fail($"Delete the id: {TestAnime.Id}");
             }
         }
 
@@ -77,7 +74,7 @@ namespace AnimeApi.UnitTests
                 Name = "Test",
                 CurrentEpisode = 0,
                 TotalEpisodes = 12,
-                DoneWatching = true,
+                IsFinished = true,
                 IsAiringFinished = true
             };
 
@@ -116,7 +113,7 @@ namespace AnimeApi.UnitTests
                 Name = "Delete with Id UnitTest",
                 CurrentEpisode = 0,
                 TotalEpisodes = 1,
-                DoneWatching = false,
+                IsFinished = false,
                 IsAiringFinished = false
             };
 
@@ -128,7 +125,7 @@ namespace AnimeApi.UnitTests
         [Test]
         public static async Task Patch_With_Valid_String_Value()
         {
-            const string fieldToUpdate = "name", newName = "!!";
+            const string fieldToUpdate = nameof(Anime.Name), newName = "!!";
 
             if ((await Api.PartialUpdateAsync(TestAnime.Id!, fieldToUpdate, newName)).isSuccess)
             {
@@ -138,10 +135,9 @@ namespace AnimeApi.UnitTests
                     Name = newName
                 });
 
-                if (getNewAnime.Count is 0 ||
-                    getNewAnime[0].Name is not newName)
+                if (getNewAnime.Count is not 1)
                 {
-                    Assert.Fail("Anime not found or 'name' not changed");
+                    Assert.Fail($"Anime not found or '{fieldToUpdate}' not changed");
                 }
 
                 Assert.Pass();
@@ -153,21 +149,20 @@ namespace AnimeApi.UnitTests
         [Test]
         public static async Task Patch_With_Valid_Int_Value()
         {
-            const string fieldToUpdate = "total_episodes", value = "999";
+            const string fieldToUpdate = nameof(Anime.TotalEpisodes), value = "999";
             var correctValue = int.Parse(value);
 
             if ((await Api.PartialUpdateAsync(TestAnime.Id!, fieldToUpdate, value)).isSuccess)
             {
-                List<Anime> getNewAnime = await Api.GetMatchesAsync(new Anime()
+                List<Anime> getUpdatedAnime = await Api.GetMatchesAsync(new Anime
                 {
                     Id = TestAnime.Id,
                     TotalEpisodes = correctValue
                 });
 
-                if (getNewAnime.Count is 0 ||
-                    getNewAnime[0].TotalEpisodes != correctValue)
+                if (getUpdatedAnime.Count is not 1)
                 {
-                    Assert.Fail("Anime not found or 'total_episodes' not changed");
+                    Assert.Fail($"Anime not found or '{fieldToUpdate}' not changed");
                 }
 
                 Assert.Pass();
@@ -179,7 +174,7 @@ namespace AnimeApi.UnitTests
         [Test]
         public static async Task Patch_With_Bool_Value()
         {
-            const string fieldToUpdate = "finished", value = "true";
+            const string fieldToUpdate = nameof(Anime.IsAiringFinished), value = "true";
             var correctValue = bool.Parse(value);
 
             if ((await Api.PartialUpdateAsync(TestAnime.Id!, fieldToUpdate, value)).isSuccess)
@@ -193,7 +188,7 @@ namespace AnimeApi.UnitTests
                 if (getNewAnime.Count is 0 ||
                     getNewAnime[0].IsAiringFinished != correctValue)
                 {
-                    Assert.Fail("Anime not found or 'finished_airing' not changed");
+                    Assert.Fail($"Anime not found or '{fieldToUpdate}' not changed");
                 }
 
                 Assert.Pass();
@@ -207,7 +202,7 @@ namespace AnimeApi.UnitTests
         {
             Anime newAnimeValues = new()
             {
-                CurrentEpisode = 69,
+                IsFinished = false,
                 TotalEpisodes = 100
             };
 
@@ -217,7 +212,7 @@ namespace AnimeApi.UnitTests
         [Test]
         public static async Task Partial_Update_With_Wrong_Value_Type()
         {
-            var validFieldToUpdate = "total_episodes";
+            var validFieldToUpdate = nameof(Anime.TotalEpisodes);
             var invalidValue = "If this appears in the db, then something's terribly off";
 
             try
