@@ -81,7 +81,7 @@ namespace AnimeApi.Service
                     .Where(x =>
                         x.Id == animeToMatch.Id ||
                         x.Name!.Equals(animeToMatch.Name, StringComparison.InvariantCultureIgnoreCase) ||
-                        x.DoneWatching == animeToMatch.DoneWatching ||
+                        x.IsFinished == animeToMatch.IsFinished ||
                         x.IsAiringFinished == animeToMatch.IsAiringFinished ||
                         x.CurrentEpisode == animeToMatch.CurrentEpisode ||
                         x.TotalEpisodes == animeToMatch.TotalEpisodes)
@@ -95,7 +95,7 @@ namespace AnimeApi.Service
 
                     // So it doesn't search for an existing name
                     x.Name!.Contains(animeToMatch.Name ?? "abc123def", StringComparison.InvariantCultureIgnoreCase) ||
-                    x.DoneWatching == animeToMatch.DoneWatching ||
+                    x.IsFinished == animeToMatch.IsFinished ||
                     x.IsAiringFinished == animeToMatch.IsAiringFinished ||
                     x.CurrentEpisode == animeToMatch.CurrentEpisode ||
                     x.TotalEpisodes == animeToMatch.TotalEpisodes)
@@ -106,7 +106,7 @@ namespace AnimeApi.Service
         ///     Create an anime object in the db
         /// </summary>
         /// <param name="anime"> The anime to create </param>
-        /// <returns> The action taken by the server </returns>
+        /// <returns> True if operation succeeded </returns>
         public static async Task<bool> CreateAsync(Anime anime)
         {
             // Avoid name conflicts and user's confusion
@@ -209,7 +209,7 @@ namespace AnimeApi.Service
                     continue;
                 }
 
-                if ((await PartialUpdateAsync(animeId, property.Name.ToLower(),
+                if ((await PartialUpdateAsync(animeId, property.Name,
                     property.GetValue(newAnimeValues)!.ToString()!)).isSuccess is false)
                 {
                     return false;
