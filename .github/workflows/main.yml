@@ -1,4 +1,4 @@
-name: AniAPI Build
+name: AnimeApi Build
 
 
 on:
@@ -7,10 +7,10 @@ on:
     paths-ignore:
       - "./README.md"
 
-  pull-request:
+  pull_request:
     branches: [ main ]
 
-  workflow-dispatch:
+  workflow_dispatch:
 
 
 jobs:
@@ -23,10 +23,8 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 6.0.x
+          include-prerelease: true
 
-      - name: Install dependencies
-        run: dotnet restore
-
-      - name: Build and run the app
-        run: dotnet run -p "AnimeAPI/AnimeAPI.csproj" -c Release -- -d Ani -c API
+      - name: Build project
+        run: dotnet build -p "AnimeApi/AnimeApi.csproj" -c Release
