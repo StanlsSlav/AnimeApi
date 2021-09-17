@@ -110,6 +110,10 @@ As of now, it allows the user to locally manage their anime watchlist via MongoD
 
 ---
 
+## P.S. Highly encouraging everybody to create their own validation rules and make daily exports of the data!
+
+---
+
 Seems fun? Contribute and help on making it ~~awesome~~ grander
 1. Fork the project
 2. Modify it
