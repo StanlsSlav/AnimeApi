@@ -21,20 +21,7 @@ namespace AnimeApi.Controllers
     public class AnimeApi : ControllerBase
     {
         /// <summary>
-        ///     For testing purposes
-        /// </summary>
-        /// <returns> An message </returns>
-        /// <response code="200"> An ok message </response>
-        [HttpGet("/")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Ping()
-        {
-            // await Task.Delay(TimeSpan.FromMinutes(30)); >:)
-            return Ok("OK");
-        }
-
-        /// <summary>
-        ///     Get all or matching anime from query parameters
+        ///     Get all or matching anime
         /// </summary>
         /// <param name="anime"> The anime scheme to query on </param>
         /// <returns> Ok with all the anime or that matches the query </returns>
@@ -56,7 +43,7 @@ namespace AnimeApi.Controllers
         }
 
         /// <summary>
-        ///     Create an anime from query parameters
+        ///     Create an anime
         /// </summary>
         /// <param name="name"> The name of the new anime </param>
         /// <param name="currentEpisode"> Last seen episode of the new anime </param>
@@ -104,7 +91,7 @@ namespace AnimeApi.Controllers
         }
 
         /// <summary>
-        ///     Delete an anime from id query
+        ///     Delete an anime
         /// </summary>
         /// <param name="id"> The anime id to delete </param>
         /// <returns> Ok if successful </returns>
@@ -127,7 +114,7 @@ namespace AnimeApi.Controllers
         }
 
         /// <summary>
-        ///     Update a field with a new value with the specified id
+        ///     Update a field with a new value
         /// </summary>
         /// <param name="id"> The anime id to find </param>
         /// <param name="field"> The field to update </param>
@@ -154,7 +141,7 @@ namespace AnimeApi.Controllers
         }
 
         /// <summary>
-        ///     Same as <see cref="PartialUpdate" />, but allows various fields to get updated
+        ///     Fully updates an anime
         /// </summary>
         /// <param name="id"> The anime id to find </param>
         /// <param name="newAnime"> The anime object to update against </param>
@@ -174,7 +161,7 @@ namespace AnimeApi.Controllers
             {
                 if (await Api.UpdateAsync(id, newAnime))
                 {
-                    return Ok(await Api.GetMatchesAsync(new Anime() { Id = id }));
+                    return Ok(await Api.GetMatchesAsync(new Anime { Id = id }));
                 }
 
                 return BadRequest("🦆");
