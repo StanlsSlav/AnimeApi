@@ -2,7 +2,7 @@
 ### AniAPI for short
 <div align="center">
 
-  [![Target Framework Badge](https://img.shields.io/badge/dynamic/xml?color=%23512bd4&label=Target&query=%2F%2FTargetFramework%5B1%5D&url=https%3A%2F%2Fraw.githubusercontent.com%2FStanlsSlav%2FAnimeApi%2Fmaster%2FAnimeApi%2AnimeApi.csproj&logo=.net)](https://dotnet.microsoft.com/download/dotnet/5.0)
+  [![Target Framework Badge](https://img.shields.io/badge/dynamic/xml?color=%23512bd4&label=Target&query=%2F%2FTargetFramework%5B1%5D&url=https%3A%2F%2Fraw.githubusercontent.com%2FStanlsSlav%2FAnimeApi%2Fmaster%2FAnimeApi%2FAnimeApi.csproj&logo=.net)](https://dotnet.microsoft.com/download/dotnet/6.0)
   [![Build Badge](https://github.com/StanlsSlav/AnimeApi/actions/workflows/main.yml/badge.svg)]("https://github.com/StanlsSlav/AnimeApi/actions/workflows/main.yml/badge.svg")
   [![CodeFactor Badge](https://www.codefactor.io/repository/github/stanlsslav/animeapi/badge/main)](https://www.codefactor.io/repository/github/stanlsslav/animeapi/overview/main)
 
