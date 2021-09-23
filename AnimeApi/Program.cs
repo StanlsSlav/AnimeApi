@@ -1,21 +1,13 @@
 #pragma warning disable 1591
 
 using System;
+using AnimeApi.Models.Cmd;
 using CommandLine;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 namespace AnimeApi
 {
-    internal class Options
-    {
-        [Option('d', "database", Required = false, HelpText = "Database to access")]
-        public string Database { get; set; }
-
-        [Option('c', "collection", Required = false, HelpText = "Collection to use")]
-        public string Collection { get; set; }
-    }
-
     public static class Program
     {
         public static void Main(string[] args)
