@@ -31,18 +31,23 @@ namespace AnimeApi.Models.ModelValidators
 
             RuleFor(anime => anime.Id)
                 .Must(value => value is not "")
-                    .WithMessage("Id must not be empty")
+                    .WithMessage($"{nameof(Anime.Id)} must not be empty")
                 
                 .Length(24)
-                    .WithMessage("Id must be 24 characters long");
+                    .WithMessage($"{nameof(Anime.Id)} must be 24 characters long");
 
 
             RuleFor(anime => anime.Name)
                 .Must(value => value is not "")
-                    .WithMessage("Name must not be empty")
+                    .WithMessage($"{nameof(Anime.Name)} must not be empty")
                 
                 .MinimumLength(2)
-                    .WithMessage("Name must be at least 2 characters long");
+                    .WithMessage($"{nameof(Anime.Name)} must be at least 2 characters long");
+
+
+            RuleFor(anime => anime.Link)
+                .Must(BeAnEmptyOrValidLink)
+                    .WithMessage("The link must be similar to 'https://duckduckgo.com/' or be empty");
 
 
             RuleFor(anime => anime.IsFinished)
@@ -52,15 +57,20 @@ namespace AnimeApi.Models.ModelValidators
             
             RuleFor(anime => anime.CurrentEpisode)
                 .GreaterThanOrEqualTo(0)
-                    .WithMessage("Current_episode must hold a positive value");
+                    .WithMessage($"{nameof(Anime.CurrentEpisode)} must hold a positive value");
 
 
             RuleFor(anime => anime.TotalEpisodes)
                 .GreaterThanOrEqualTo(0)
-                    .WithMessage("Total_episodes must hold a positive value")
+                    .WithMessage($"{nameof(Anime.TotalEpisodes)} must hold a positive value")
                 
                 .GreaterThanOrEqualTo(anime => anime.CurrentEpisode)
-                    .WithMessage("Total_episodes must be greater or equal to current_episode");
+                    .WithMessage($"{nameof(Anime.TotalEpisodes)} must be greater or equal to current_episode");
+        }
+
+        private static bool BeAnEmptyOrValidLink(string link)
+        {
+            return string.IsNullOrWhiteSpace(link) || link.StartsWith("https://");
         }
     }
 }

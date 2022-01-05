@@ -43,13 +43,47 @@ namespace AnimeApi.Controllers
         }
 
         /// <summary>
+        ///     Redirect the user to the anime website
+        /// </summary>
+        /// <param name="anime"> The anime scheme to query on </param>
+        /// <returns> Redirects to the link of the first anime found </returns>
+        /// <response code="204"> Returns when no matching anime was found </response>
+        /// <response code="302">
+        ///     Returns a redirect to the link of the anime,
+        ///     replacing any "%ep" within the link with the current episode
+        /// </response>
+        [HttpGet("/redirect")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status302Found)]
+        public async Task<IActionResult> GetRedirectToAnime([Required] [FromQuery] Anime anime)
+        {
+            List<Anime> data = await Api.GetMatchesAsync(anime);
+
+            if (!data.Any())
+            {
+                return NoContent();
+            }
+
+            var redirectAnime = data[0];
+
+            if (redirectAnime.Link is null)
+            {
+                return NoContent();
+            }
+
+            if (redirectAnime.Link.Contains("%ep") is false)
+            {
+                return Redirect(redirectAnime.Link);
+            }
+
+            return Redirect(redirectAnime.Link.Replace("%ep",
+                redirectAnime.CurrentEpisode.ToString()));
+        }
+
+        /// <summary>
         ///     Create an anime
         /// </summary>
-        /// <param name="name"> The name of the new anime </param>
-        /// <param name="currentEpisode"> Last seen episode of the new anime </param>
-        /// <param name="totalEpisodes"> Total episodes count of the new anime </param>
-        /// <param name="hasFinishedAiring"> If the new anime has completed airing </param>
-        /// <param name="doneWatching"> If the user marked the new anime as completed </param>
+        /// <param name="anime">The anime to create</param>
         /// <returns> Ok with the anime if successful; otherwise a bad request with the encountered errors</returns>
         /// <response code="200"> Returns the newly created anime </response>
         /// <response code="400"> Returns the possible errors caused by the request with the occured errors </response>
@@ -59,20 +93,17 @@ namespace AnimeApi.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PostAnime(
-            [Required] [FromQuery(Name = "name")] string name,
-            [Required] [FromQuery(Name = "current_episode")] int currentEpisode,
-            [Required] [FromQuery(Name = "total_episodes")] int totalEpisodes,
-            [Required] [FromQuery(Name = "is_airing_finished")] bool hasFinishedAiring,
-            [FromQuery(Name = "is_finished")] bool? doneWatching)
+            [Required] [FromQuery] Anime anime)
         {
             Anime animeToCreate = new()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
-                Name = name.Trim(),
-                CurrentEpisode = currentEpisode,
-                TotalEpisodes = totalEpisodes,
-                IsAiringFinished = hasFinishedAiring,
-                IsFinished = doneWatching ?? currentEpisode == totalEpisodes
+                Name = anime.Name?.Trim(),
+                Link = anime.Link,
+                CurrentEpisode = anime.CurrentEpisode,
+                TotalEpisodes = anime.TotalEpisodes,
+                IsAiringFinished = anime.IsAiringFinished,
+                IsFinished = anime.IsFinished
             };
 
             var (isValid, errors) = await Api.ValidateAnimeAsync(animeToCreate, false);
