@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AnimeApi.HelperMethods;
 using AnimeApi.Models;
 using AnimeApi.Models.ModelValidators;
 using MongoDB.Bson;
@@ -152,21 +151,41 @@ namespace AnimeApi.Service
         {
             var animeToUpdate = (await GetMatchesAsync(new Anime { Id = animeId }))[0];
 
-            if (!ApiParsing.TryParseName(propertyToUpdate, out var validProperty) ||
-                !ApiParsing.TryParseTypeValue(validProperty!, newValue, out var validValue))
+            var validProperty = typeof(Anime)
+                .GetProperties()
+                .FirstOrDefault(p
+                    => p.Name.Equals(propertyToUpdate, StringComparison.InvariantCultureIgnoreCase))?
+                .Name;
+
+            if (string.IsNullOrEmpty(validProperty))
             {
                 return (false, null);
             }
 
+            var validType = typeof(Anime).GetProperties()
+                .First(p => p.Name.Equals(validProperty))
+                .PropertyType;
+
+            object validValue = newValue;
+
+            if (validType == typeof(int))
+            {
+                validValue = int.Parse(newValue);
+            }
+            else if (validType == typeof(bool))
+            {
+                validValue = bool.Parse(newValue);
+            }
+
             // Don't let current episode be > than total episodes
             var isCurrentEpHigher =
-                validProperty!.Contains("current") &&
-                (int)validValue! > animeToUpdate.TotalEpisodes;
+                validProperty.Contains(nameof(Anime.CurrentEpisode)) &&
+                (int)validValue > animeToUpdate.TotalEpisodes;
 
             // Don't let total episodes be < than current episode
             var isTotalEpsLower =
-                validProperty.Contains("total") &&
-                (int)validValue! < animeToUpdate.CurrentEpisode;
+                validProperty.Contains(nameof(Anime.TotalEpisodes)) &&
+                (int)validValue < animeToUpdate.CurrentEpisode;
 
             // Don't let anime name duplicates
             var isNameDuplicate =
@@ -184,7 +203,7 @@ namespace AnimeApi.Service
                 Builders<Anime>.Update.Set(validProperty, validValue));
 
             List<Anime> data = await GetMatchesAsync(new Anime { Id = animeId });
-            Anime anime = data[0];
+            var anime = data[0];
 
             return (true, anime);
         }
@@ -210,7 +229,7 @@ namespace AnimeApi.Service
                 }
 
                 if ((await PartialUpdateAsync(animeId, property.Name,
-                    property.GetValue(newAnimeValues)!.ToString()!)).isSuccess is false)
+                        property.GetValue(newAnimeValues)!.ToString()!)).isSuccess is false)
                 {
                     return false;
                 }
