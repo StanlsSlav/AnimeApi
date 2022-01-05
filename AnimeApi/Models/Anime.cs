@@ -23,33 +23,33 @@ namespace AnimeApi.Models
         /// <summary>
         ///     Name or abbreviation of an anime
         /// </summary>
-        [FromQuery(Name = "name")]
         public string? Name { get; init; }
+
+        /// <summary>
+        ///     The url to redirect to an anime
+        /// </summary>
+        public string? Link { get; init; }
 
         /// <summary>
         ///     Indicator of the completion status the anime (finished / unfinished)
         /// </summary>
-        [FromQuery(Name = "is_finished")]
-        public bool? IsFinished { get; init; }
+        public bool IsFinished { get; init; }
 
         /// <summary>
         ///     Indicator of the airing status of the anime (airing / aired)
         /// </summary>
-        [FromQuery(Name = "is_airing_finished")]
-        public bool? IsAiringFinished { get; init; }
+        public bool IsAiringFinished { get; init; }
 
         /// <summary>
         ///     Tracks the latest episode the user watched
         /// </summary>
         [BsonRepresentation(BsonType.Int32, AllowTruncation = true)]
-        [FromQuery(Name = "current_episode")]
-        public int? CurrentEpisode { get; init; }
+        public int CurrentEpisode { get; init; }
 
         /// <summary>
         ///     Tracks the total amount of episodes in the anime
         /// </summary>
         [BsonRepresentation(BsonType.Int32, AllowTruncation = true)]
-        [FromQuery(Name = "total_episodes")]
-        public int? TotalEpisodes { get; init; }
+        public int TotalEpisodes { get; init; }
     }
 }
