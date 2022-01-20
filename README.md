@@ -16,7 +16,7 @@ As of now, it allows the user to locally manage their anime watchlist via MongoD
 
 <details>
   <summary>
-    Database schema can be found on <a href="https://localhost:5001/swagger">/swagger</a> or in file <a href="./AnimeAPI/Models/Anime.cs">Anime.cs</a>
+    Database schema can be found on <a target="_blank" href="https://localhost:5001/swagger">/swagger</a> or in file <a href="./AnimeAPI/Models/Anime.cs">Anime.cs</a>
   </summary>
 
   ```cs
@@ -68,7 +68,7 @@ As of now, it allows the user to locally manage their anime watchlist via MongoD
   PATCH /anime?id=1234&field=name&value=Bleach
   ```
 
-  <div align="center" style="color: #f0f022; font-size: large;">
+  <div align="center">
     :warning: The id's presented in the examples aren't valid and won't be accepted by the app :warning:
   </div>
 
@@ -80,26 +80,30 @@ As of now, it allows the user to locally manage their anime watchlist via MongoD
     Get it up and running :gear:
   </summary>
 
-  1. Make sure you have MongoDB installed and there's an instance running
+  - Make sure you have MongoDB installed and there's an instance running
+    - The app connects to a passwordless database so make sure of it
 
-  1.1 The app connects to a passwordless database so make sure of it
 
-  2. .Net 5! It's required, click on the *Target* badge
+  - .Net 5! It's required, click on the *Target* badge
 
-  3. Configure your environment variables
 
-  3.1 `Database` and `Collection`
+  - Configure your environment variables or set the appropiate flags at the last point
+    - `Database` and `Collection`. They're case sensitive!
 
-  4. Clone the repo
+
+  - Clone the repo
   ```sh
   git clone https://github.com/StanlsSlav/AniAPI.git \
   cd AniAPI
   ```
 
-  5. Run the app and check on <a href="https://localhost:5001/">localhost:5001/</a> if it's up and running
+
+  - Run the app and check on <a target="_blank" href="https://localhost:5001/">localhost:5001/</a> if it's up and running
   ```sh
-  dotnet build \
-  dotnet run -c Release
+  dotnet run -p ./AnimeAPI -c Release
+
+  # Or with flags
+  dotnet run -p ./AnimeAPI -c Release -- -d <DB> -c <col>
   ```
 
 </details>
